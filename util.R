@@ -42,12 +42,12 @@ printTrnCvTrainErrors = function(model, data, yName, xNames, createModel, create
   cat('    Trn/CV, Train: ', trnError, '/', cvError, ', ', trainError, '\n', sep='')
 }
 
-outputSolution = function(createPrediction, model, testData, idName, yName, xNames, filename) {
+outputSolution = function(createPrediction, model, testData, idName, yName, xNames, filename, extraColNames=c()) {
   cat('Outputing solution...\n')
   cat('    Creating prediction...\n')
   prediction = createPrediction(model, testData, xNames)
-  solution = data.frame(testData[, idName], prediction)
-  colnames(solution) = c(idName, yName)
+  solution = data.frame(testData[, idName], prediction, testData[, extraColNames])
+  colnames(solution) = c(idName, yName, extraColNames)
   cat('    Writing solution to file: ', filename, '...\n', sep='')
-  write.csv(solution, file=filename, row.names=F)
+  write.csv(solution, file=filename, row.names=F, quote=F)
 }
