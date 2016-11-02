@@ -26,7 +26,7 @@ plotLearningCurve = function(data, yName, xNames, createModel, createPrediction,
       #don't suppress the warning so that it gets raised normally
       model = createModel(trainSubset, yName, xNames)
     }
-    trainErrors[count] = computeError(trainSubset[, yName], createPrediction(model, xNames=xNames))
+    trainErrors[count] = computeError(trainSubset[, yName], createPrediction(model, trainSubset, xNames))
     cvErrors[count] = computeError(cv[, yName], createPrediction(model, cv, xNames))
 
     count = count + 1
