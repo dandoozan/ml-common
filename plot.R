@@ -26,7 +26,7 @@ plotLearningCurve = function(data, yName, xNames, createModel, createPrediction,
       #don't suppress the warning so that it gets raised normally
       model = createModel(trainSubset, yName, xNames)
     }
-    trainErrors[count] = computeError(trainSubset[, yName], createPrediction(model, trainSubset, xNames))
+    trainErrors[count] = computeError(trainSubset[, yName], createPrediction(model, xNames=xNames))
     cvErrors[count] = computeError(cv[, yName], createPrediction(model, cv, xNames))
 
     count = count + 1
@@ -78,7 +78,7 @@ plotTrainAndTestHistograms = function(trainData, testData, startIndex=1, numCols
 }
 
 #Plot the correlations between all numeric cols in data
-#E.g. plotCorrelations(train, Y_NAME)
+#E.g. plotCorrelations(train, Y_NAME, save=F)
 plotCorrelations = function(data, yName, save=TRUE) {
   cat('Plotting correlations...\n')
 
@@ -86,7 +86,7 @@ plotCorrelations = function(data, yName, save=TRUE) {
   correlationsMatrix = cor(data[,names(Filter(is.numeric, data))])
 
   #print correlations in order to console
-  sortedCorrelations = sort(correlationsMatrix[yName, ], decreasing=T)
+  sortedCorrelations = sort(abs(correlationsMatrix[yName, ]), decreasing=T)
   cat('Correlations with ', yName, ' (in order):\n', sep='')
   print(stack(sortedCorrelations))
 

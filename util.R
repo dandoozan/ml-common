@@ -27,7 +27,7 @@ computeTrainCVErrors = function(data, yName, xNames, createModel, createPredicti
 
   #compute train and cv errors
   model = createModel(train, yName, xNames)
-  trainError = computeError(train[, yName], createPrediction(model, train, xNames))
+  trainError = computeError(train[, yName], createPrediction(model, xNames=xNames))
   cvError = computeError(cv[, yName], createPrediction(model, cv, xNames))
 
   return(list(train=trainError, cv=cvError))
@@ -38,7 +38,7 @@ printTrnCvTrainErrors = function(model, data, yName, xNames, createModel, create
   trnCvErrors = computeTrainCVErrors(data, yName, xNames, createModel, createPrediction, computeError)
   trnError = trnCvErrors$train
   cvError = trnCvErrors$cv
-  trainError = computeError(data[, yName], createPrediction(model, data, xNames))
+  trainError = computeError(data[, yName], createPrediction(model, xNames=xNames))
   cat('    Trn/CV, Train: ', trnError, '/', cvError, ', ', trainError, '\n', sep='')
 }
 
