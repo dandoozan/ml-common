@@ -51,3 +51,7 @@ outputSolution = function(createPrediction, model, testData, idName, yName, xNam
   cat('    Writing solution to file: ', filename, '...\n', sep='')
   write.csv(solution, file=filename, row.names=F, quote=F)
 }
+
+printNaCols = function(data) {
+  print(Filter(function(x) sum(x) > 0, sapply(data, function(x) sum(is.na(x)))))
+}
