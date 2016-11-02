@@ -1,7 +1,7 @@
 #Plot learning curve
 #E.g. plotLearningCurve(train, 'SalePrice', createModel, createPrediction, computeError, save=PROD_RUN)
 plotLearningCurve = function(data, yName, xNames, createModel, createPrediction, computeError, increment=round(nrow(data)/1000)*100, ylim=NULL, save=FALSE) {
-  cat('Plotting learning curve (increment=', increment, ')...\n', sep='')
+  cat('Plotting learning curve (dataSize=', nrow(data),', increment=', increment, ')...\n', sep='')
 
   #split data into train and cv
   split = splitData(data, yName)
@@ -78,12 +78,24 @@ plotTrainAndTestHistograms = function(trainData, testData, startIndex=1, numCols
 }
 
 #Plot the correlations between all numeric cols in data
-#E.g. plotCorrelations(train, 'SalePrice')
-plotCorrelations = function(data, yName) {
+#E.g. plotCorrelations(train, Y_NAME)
+plotCorrelations = function(data, yName, save=TRUE) {
+  cat('Plotting correlations...\n')
+
   require(corrplot) #cor, corrplot
   correlationsMatrix = cor(data[,names(Filter(is.numeric, data))])
+
+  #print correlations in order to console
   sortedCorrelations = sort(correlationsMatrix[yName, ], decreasing=T)
   cat('Correlations with ', yName, ' (in order):\n', sep='')
   print(stack(sortedCorrelations))
+
+  #plot the correlations
+  if (save) {
+    filename = 'Correlations.png'
+    cat('Saving plot to:', filename, '\n')
+    png(filename, width=800, height=800)
+  }
   corrplot(correlationsMatrix)
+  if (save) dev.off()
 }
