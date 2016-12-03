@@ -14,9 +14,12 @@
 #-Fill in computeError
 #-Fill in findBestSetOfFeatures if necessary (ie. if using all features is too slow)
   #-Manually use Boruta (store printed results in variables in the code):
+    #-Note: this takes awhile to run.  It takes a long time at the beginning but gets
+    #quicker as it confirms/rejects features.  Still, it takes several minutes/hours
+    #I did 227 features on 3522 nrow dataset in 55.52803 mins (using default maxRuns=100)
     library(Boruta)
     set.seed(13)
-    b = Boruta(train[possibleFeatures], train[[Y_NAME]], doTrace=2)
+    b = Boruta(train[, possibleFeatures], train[[Y_NAME]], doTrace=2, maxRuns=11)
     paste(names(b$finalDecision[b$finalDecision=='Confirmed']), collapse='\', \'') #confirmed
     paste(names(b$finalDecision[b$finalDecision=='Tentative']), collapse='\', \'') #tentative
     paste(names(b$finalDecision[b$finalDecision=='Rejected']), collapse='\', \'') #rejected
