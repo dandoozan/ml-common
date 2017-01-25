@@ -29,9 +29,7 @@ convertToDataFrame = function(data, colNames) {
   return(df)
 }
 
-getFormula = function(yName, xNames) {
-  return(as.formula(paste(yName, '~', paste(xNames, collapse='+'))))
-}
+
 
 computeTrainCVErrors = function(data, yName, xNames, createModel, createPrediction, computeError) {
   #split data into train, cv
@@ -192,4 +190,18 @@ getCurrencyString = function(number) {
     return(paste0('-$', round(abs(number), 2)))
   }
   return(paste0('$', round(number, 2)))
+}
+printNumberGroup = function(numbers) {
+  paste(numbers, collapse='/')
+}
+getFormula = function(yName, xNames='.') {
+  return(as.formula(paste(yName, '~', paste(xNames, collapse='+'))))
+}
+
+#--------- data manipulation -------
+oneHotEncode = function(d, xNames) {
+  require(caret)
+  dataToUse = convertToDataFrame(d[, xNames], xNames)
+  dmy = caret::dummyVars('~.', dataToUse, fullRank=T)
+  return(data.frame(predict(dmy, dataToUse)))
 }

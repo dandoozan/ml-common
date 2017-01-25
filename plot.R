@@ -118,15 +118,15 @@ plotTrainHistogram = function(col) {
 }
 
 #Plot the correlations between all numeric cols in data
-#E.g. plotCorrelations(train, Y_NAME, save=F)
-plotCorrelations = function(data, yName, save=TRUE) {
+#E.g. plotCorrelations(d, Y_NAME)
+plotCorrelations = function(d, yName, xNames=setdiff(colnames(d), F.TOEXCLUDE), numElements=30, save=F) {
   cat('Plotting correlations...\n')
 
   require(corrplot) #cor, corrplot
-  correlationsMatrix = cor(data[,names(Filter(is.numeric, data))])
+  correlationsMatrix = cor(Filter(is.numeric, d[,c(yName, xNames)]))
 
   #print correlations in order to console
-  sortedCorrelations = sort(abs(correlationsMatrix[yName, ]), decreasing=T)
+  sortedCorrelations = sort(abs(correlationsMatrix[yName, ]), decreasing=T)[1:min(nrow(correlationsMatrix), numElements)]
   cat('Correlations with ', yName, ' (in order):\n', sep='')
   print(stack(sortedCorrelations))
 
@@ -136,7 +136,7 @@ plotCorrelations = function(data, yName, save=TRUE) {
     cat('Saving plot to:', filename, '\n')
     png(filename, width=1600, height=1600, res=150)
   }
-  corrplot(correlationsMatrix)
+  corrplot(correlationsMatrix[names(sortedCorrelations), names(sortedCorrelations)])
   if (save) dev.off()
 }
 
